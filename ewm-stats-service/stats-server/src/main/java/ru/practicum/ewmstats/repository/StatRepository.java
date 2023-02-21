@@ -10,22 +10,24 @@ import java.util.List;
 
 public interface StatRepository extends JpaRepository<Hit, Integer> {
     @Query(
-            value = "SELECT new ru.practicum.ewmstats.model.ViewStats(h.app, h.uri, COUNT(h.ip)) " +
+            value = "SELECT new ru.practicum.ewmstats.model.ViewStats(a.name, h.uri, COUNT(h.ip)) " +
                     "FROM Hit h " +
+                    "JOIN h.app a " +
                     "WHERE h.timestamp >= ?1 " +
                     "  AND h.timestamp <= ?2 " +
-                    "  AND h.uri in ?3 " +
-                    "GROUP BY h.app, h.uri " +
+                    "  AND (?4 = 0 or h.uri in ?3) " +
+                    "GROUP BY a.name, h.uri " +
                     "ORDER BY COUNT(h.ip) DESC ")
-    List<ViewStats> getStatsNotUnique(LocalDateTime start, LocalDateTime end, List<String> uris);
+    List<ViewStats> getStatsNotUnique(LocalDateTime start, LocalDateTime end, List<String> uris, int urisLen);
 
     @Query(
-            value = "SELECT new ru.practicum.ewmstats.model.ViewStats(h.app, h.uri, COUNT(DISTINCT(h.ip))) " +
+            value = "SELECT new ru.practicum.ewmstats.model.ViewStats(a.name, h.uri, COUNT(DISTINCT(h.ip))) " +
                     "FROM Hit h " +
+                    "JOIN h.app a " +
                     "WHERE h.timestamp >= ?1 " +
                     "  AND h.timestamp <= ?2 " +
-                    "  AND h.uri in ?3 " +
-                    "GROUP BY h.app, h.uri " +
+                    "  AND (?4 is null or h.uri in ?3) " +
+                    "GROUP BY a.name, h.uri " +
                     "ORDER BY COUNT(DISTINCT(h.ip)) DESC ")
-    List<ViewStats> getStatsUnique(LocalDateTime start, LocalDateTime end, List<String> uris);
+    List<ViewStats> getStatsUnique(LocalDateTime start, LocalDateTime end, List<String> uris, int urisLen);
 }

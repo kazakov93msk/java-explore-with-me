@@ -1,12 +1,25 @@
 package ru.practicum.ewmstats.mapper;
 
-import org.mapstruct.Mapper;
 import ru.practicum.ewmstats.dto.HitDto;
 import ru.practicum.ewmstats.model.Hit;
 
-@Mapper(componentModel = "spring")
-public interface HitMapper {
-    Hit mapToHit(HitDto hitDto);
+public class HitMapper {
+    public static Hit mapToHit(HitDto hitDto) {
+        return Hit.builder()
+                .id(hitDto.getId())
+                .ip(hitDto.getIp())
+                .uri(hitDto.getUri())
+                .timestamp(hitDto.getTimestamp())
+                .build();
+    }
 
-    HitDto mapToHitDto(Hit hit);
+    public static HitDto mapToHitDto(Hit hit) {
+        return HitDto.builder()
+                .id(hit.getId())
+                .app(hit.getApp().getName())
+                .ip(hit.getIp())
+                .uri(hit.getUri())
+                .timestamp(hit.getTimestamp())
+                .build();
+    }
 }
