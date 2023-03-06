@@ -53,7 +53,7 @@ public class CompilationDto {
             "    title: " + toIndentedString(title) + "\n" +
             "}";
   }
-  
+
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
