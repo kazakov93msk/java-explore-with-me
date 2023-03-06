@@ -10,8 +10,7 @@ import ru.practicum.ewmservice.exception.IllegalPageArgumentException;
 public class PageableBuilder {
     public static final Integer DEFAULT_SIZE = 10;
     private static final Long DEFAULT_START = 1L;
-
-    public final Sort ID_ASC = Sort.by(Sort.Direction.ASC, "id");
+    public static final Sort ID_ASC = Sort.by(Sort.Direction.ASC, "id");
 
     public static Pageable getPageable(Long start, Integer size, Sort sort) {
         if (start == null) {

@@ -69,6 +69,7 @@ public class EventShortDto {
             "    views: " + toIndentedString(views) + "\n" +
             "}";
   }
+
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";

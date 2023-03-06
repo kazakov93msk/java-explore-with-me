@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class CompilationDto {
-  
   private Set<EventShortDto> events;
   @NotNull
   @Positive
@@ -54,6 +53,7 @@ public class CompilationDto {
             "    title: " + toIndentedString(title) + "\n" +
             "}";
   }
+  
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
