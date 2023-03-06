@@ -60,5 +60,4 @@ public class CompilationDto {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }

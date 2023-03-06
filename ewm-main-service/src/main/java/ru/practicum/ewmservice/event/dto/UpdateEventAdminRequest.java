@@ -23,7 +23,6 @@ public class UpdateEventAdminRequest {
   private Boolean requestModeration;
   private StateAction stateAction;
 
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -65,12 +64,11 @@ public class UpdateEventAdminRequest {
             "    title: " + toIndentedString(title) + "\n" +
             "}";
   }
-  
+
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }
