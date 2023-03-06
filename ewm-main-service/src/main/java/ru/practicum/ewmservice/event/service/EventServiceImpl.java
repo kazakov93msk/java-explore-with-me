@@ -147,6 +147,7 @@ public class EventServiceImpl implements EventService {
         }
         return events;
     }
+
     private Event setConfirmedRequests(Event event) {
         event.setConfirmedRequests(requestRep.findCountRequestsByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED));
         return event;

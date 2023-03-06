@@ -24,7 +24,6 @@ public class EventFullDto {
   private String annotation;
   @NotNull
   private CategoryDto category;
-
   private String createdOn;
   @NotNull
   private String eventDate;
@@ -94,12 +93,11 @@ public class EventFullDto {
             "    views: " + toIndentedString(views) + "\n" +
             "}";
   }
-  
+
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }
