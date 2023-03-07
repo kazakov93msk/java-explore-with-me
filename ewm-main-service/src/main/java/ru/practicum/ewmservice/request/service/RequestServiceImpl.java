@@ -19,6 +19,7 @@ import ru.practicum.ewmservice.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -64,13 +65,13 @@ public class RequestServiceImpl implements RequestService {
 
         List<Request> requests = requestRep.findByIdIn(requestIds);
 
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
-            return new EventRequestStatusUpdateResult();
+        if ((!event.getRequestModeration() || event.getParticipantLimit() == 0)
+                && status.equals(RequestStatus.CONFIRMED)
+        ) {
+            return new EventRequestStatusUpdateResult(RequestMapper.mapToDto(requests), Collections.emptyList());
         }
 
         int vacancyLeft = event.getParticipantLimit() - event.getConfirmedRequests();
-
-
 
         List<Request> confirmedRequests = new ArrayList<>();
         List<Request> rejectedRequests = new ArrayList<>();
@@ -120,7 +121,10 @@ public class RequestServiceImpl implements RequestService {
         Request request = Request.builder()
                 .event(event)
                 .requester(user)
-                .status(event.getRequestModeration() ? RequestStatus.PENDING : RequestStatus.CONFIRMED)
+                .status(event.getRequestModeration() || event.getParticipantLimit() == 0
+                        ? RequestStatus.PENDING
+                        : RequestStatus.CONFIRMED
+                )
                 .created(LocalDateTime.now())
                 .build();
 
@@ -151,8 +155,10 @@ public class RequestServiceImpl implements RequestService {
         if (!event.getState().equals(EventState.PUBLISHED)) {
             throw new OperationAccessException("It is not possible to apply for an unpublished event");
         }
-        if ((event.getRequestModeration() || event.getParticipantLimit() != 0)
-                && event.getParticipantLimit() <= event.getConfirmedRequests()) {
+        if (
+                event.getParticipantLimit() != 0
+                && event.getParticipantLimit() <= event.getConfirmedRequests()
+        ) {
             throw new OperationAccessException("The participant limit has been reached");
         }
     }

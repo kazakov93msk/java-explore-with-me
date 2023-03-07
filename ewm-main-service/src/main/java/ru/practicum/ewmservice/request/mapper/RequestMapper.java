@@ -3,6 +3,7 @@ package ru.practicum.ewmservice.request.mapper;
 import ru.practicum.ewmservice.request.dto.ParticipationRequestDto;
 import ru.practicum.ewmservice.request.model.Request;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,9 @@ public class RequestMapper {
     }
 
     public static List<ParticipationRequestDto> mapToDto(List<Request> requests) {
+        if (requests == null) {
+            return Collections.emptyList();
+        }
         return requests.stream().map(RequestMapper::mapToDto).collect(Collectors.toList());
     }
 }

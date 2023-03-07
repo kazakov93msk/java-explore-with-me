@@ -19,7 +19,7 @@ public class UpdateEventAdminRequest {
   private Long category;
   private String eventDate;
   private Boolean paid;
-  private int participantLimit;
+  private Integer participantLimit;
   private Boolean requestModeration;
   private StateAction stateAction;
 

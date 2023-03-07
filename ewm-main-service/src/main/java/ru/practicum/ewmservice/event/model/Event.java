@@ -8,6 +8,7 @@ import ru.practicum.ewmservice.location.model.Location;
 import ru.practicum.ewmservice.user.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,6 +24,7 @@ public class Event {
     private Long id;
     private String title;
     @Length(max = 7000)
+    @NotBlank
     private String description;
     @Length(max = 2000)
     private String annotation;

@@ -36,9 +36,9 @@ public class EventFullDto {
   private Boolean paid;
   private Boolean requestModeration;
   private EventState state;
-  private int participantLimit;
-  private int views;
-  private int confirmedRequests;
+  private Integer participantLimit;
+  private Integer views;
+  private Integer confirmedRequests;
 
   @Override
   public boolean equals(java.lang.Object o) {

@@ -21,11 +21,9 @@ public class EventMapper {
                 .title(eventDto.getTitle())
                 .description(eventDto.getDescription())
                 .annotation(eventDto.getAnnotation())
-                // .category() need
                 .eventDate(convertDateTime(eventDto.getEventDate()))
                 .createdOn(LocalDateTime.now())
                 .location(eventDto.getLocation())
-                // .initiator() need
                 .paid(eventDto.getPaid())
                 .requestModeration(eventDto.getRequestModeration())
                 .state(EventState.PENDING)
