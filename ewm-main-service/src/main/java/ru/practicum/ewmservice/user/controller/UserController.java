@@ -56,7 +56,7 @@ public class UserController {
 
     @GetMapping("/{userId}/events/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
-    public List<ParticipationRequestDto> getRequestsByUserIdAndEventId(
+    public List<ParticipationRequestDto> getRequestsByInitiatorIdAndEventId(
             @PositiveOrZero @PathVariable Long userId,
             @PositiveOrZero @PathVariable Long eventId
     ) {

@@ -138,7 +138,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<Request> findByUserIdAndEventId(Long userId, Long eventId) {
-        return requestRep.findByEventIdAndRequesterId(eventId, userId);
+        return requestRep.findByEventIdAndEventInitiatorId(eventId, userId);
     }
 
     private void validateEvent(Event event, Long userId, Boolean isOwner) {

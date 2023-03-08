@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Service
-//@RequiredArgsConstructor
 @ComponentScan(basePackages = "ru.practicum.ewmstats")
 public class EventStatService {
     private final StatsClient client;
@@ -26,6 +25,6 @@ public class EventStatService {
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        client.createHit(hitDto).getStatusCode();
+        client.createHit(hitDto);
     }
 }
