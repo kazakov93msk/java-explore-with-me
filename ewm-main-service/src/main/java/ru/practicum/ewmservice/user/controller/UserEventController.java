@@ -19,7 +19,6 @@ import ru.practicum.ewmservice.request.mapper.RequestMapper;
 import ru.practicum.ewmservice.request.service.RequestService;
 import ru.practicum.ewmservice.user.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;

@@ -155,8 +155,10 @@ public class EventServiceImpl implements EventService {
     }
 
     private Event setTransientFields(Event event) {
-        event.setConfirmedRequests(requestRep.
-                findCountRequestsByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED));
+        event.setConfirmedRequests(requestRep.findCountRequestsByEventIdAndStatus(
+                event.getId(),
+                RequestStatus.CONFIRMED
+        ));
         event.setViews(nvl(eventStatService.getViewsByEventId(event.getId(), event.getCreatedOn()), 0));
         return event;
     }

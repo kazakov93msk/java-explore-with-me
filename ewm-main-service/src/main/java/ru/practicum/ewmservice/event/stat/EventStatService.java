@@ -28,7 +28,7 @@ public class EventStatService {
     private final ObjectMapper objectMapper;
     @Value("${ewm-service.name}")
     private String appName;
-    private final String EVENT_URL = "/events/";
+    private final String eventUrl = "/events/";
     private final StatsClient client;
 
     public EventStatService(StatsClient statsClient, Gson gson, ObjectMapper objectMapper) {
@@ -62,7 +62,7 @@ public class EventStatService {
 
         List<String> uris = new ArrayList<>();
         for (Long id : ids) {
-            uris.add(EVENT_URL + id);
+            uris.add(eventUrl + id);
         }
 
         List<ViewStatsDto> viewsDto = new ArrayList<>();
@@ -88,7 +88,7 @@ public class EventStatService {
 
         return viewsDto.stream()
                 .collect(Collectors.toMap(
-                        vs -> Long.parseLong(vs.getUri().replace(EVENT_URL, "")),
+                        vs -> Long.parseLong(vs.getUri().replace(eventUrl, "")),
                         vs -> vs.getHits().intValue())
                 );
     }
