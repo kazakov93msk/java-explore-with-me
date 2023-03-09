@@ -1,5 +1,6 @@
 package ru.practicum.ewmservice.category.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewmservice.category.dto.CategoryDto;
 import ru.practicum.ewmservice.category.dto.NewCategoryDto;
 import ru.practicum.ewmservice.category.model.Category;
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CategoryMapper {
     public static CategoryDto mapToDto(Category category) {
         return CategoryDto.builder()

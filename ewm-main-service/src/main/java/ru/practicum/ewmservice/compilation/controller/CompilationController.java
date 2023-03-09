@@ -3,6 +3,7 @@ package ru.practicum.ewmservice.compilation.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmservice.compilation.dto.CompilationDto;
 import ru.practicum.ewmservice.compilation.mapper.CompilationMapper;
@@ -16,13 +17,14 @@ import java.util.List;
 @RequestMapping(path = "/compilations")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class CompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CompilationDto> findAll(
-            @RequestParam(defaultValue = "false") Boolean pinned,
+            @RequestParam(required = false) Boolean pinned,
             @PositiveOrZero @RequestParam(defaultValue = "0") Long from,
             @Positive @RequestParam(defaultValue = "10") Integer size
     ) {

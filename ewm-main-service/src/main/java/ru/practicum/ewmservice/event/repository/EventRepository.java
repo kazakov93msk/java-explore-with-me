@@ -8,10 +8,11 @@ import ru.practicum.ewmservice.event.model.Event;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
-    List<Event> findByIdIn(List<Long> eventIds);
+    List<Event> findByIdIn(Set<Long> eventIds);
 
     Boolean existsByCategoryId(Long id);
 

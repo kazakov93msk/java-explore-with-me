@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.ewmstats.dto.HitDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +26,8 @@ public class StatsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getViewStats(
-            LocalDateTime start,
-            LocalDateTime end,
+            String start,
+            String end,
             List<String> uris,
             Boolean unique
     ) {
@@ -38,7 +37,10 @@ public class StatsClient extends BaseClient {
                 "uris", uris,
                 "unique", unique
         );
-        return get("/stats", params);
+
+        String fullPath = String.format("/stats?start=%s&end=%s&unique=%s&uris=%s", start, end, unique, uris);
+
+        return get(fullPath, params);
     }
 
     public ResponseEntity<Object> createHit(HitDto hitDto) {

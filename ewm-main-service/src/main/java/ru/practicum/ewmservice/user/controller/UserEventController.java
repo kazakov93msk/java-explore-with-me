@@ -19,7 +19,9 @@ import ru.practicum.ewmservice.request.mapper.RequestMapper;
 import ru.practicum.ewmservice.request.service.RequestService;
 import ru.practicum.ewmservice.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 @Slf4j
-public class UserController {
+public class UserEventController {
     private final UserService userService;
     private final EventService eventService;
     private final RequestService requestService;
@@ -38,7 +40,7 @@ public class UserController {
     public List<EventShortDto> findUserEvents(
             @PositiveOrZero @PathVariable Long userId,
             @PositiveOrZero @RequestParam(defaultValue = "0") Long from,
-            @PositiveOrZero @RequestParam(defaultValue = "10") Integer size
+            @Positive @RequestParam(defaultValue = "10") Integer size
     ) {
         log.info("GET: Get events by userId = {}; Pages = {}/{}", userId, from, size);
         return EventMapper.mapToShortDto(eventService.findEventsByUserId(userId, from, size));
@@ -64,15 +66,6 @@ public class UserController {
         return RequestMapper.mapToDto(requestService.findByUserIdAndEventId(userId, eventId));
     }
 
-    @GetMapping("/{userId}/requests")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ParticipationRequestDto> getRequestsByUserId(
-            @PositiveOrZero @PathVariable Long userId
-    ) {
-        log.info("GET: Get requests by userId = {}", userId);
-        return RequestMapper.mapToDto(requestService.findByUserId(userId));
-    }
-
     @PostMapping("/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto createEvent(
@@ -84,16 +77,6 @@ public class UserController {
         event.setCategory(categoryService.findById(eventDto.getCategory()));
         event.setInitiator(userService.findById(userId));
         return EventMapper.mapToFullDto(eventService.create(event));
-    }
-
-    @PostMapping("/{userId}/requests")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ParticipationRequestDto createRequest(
-            @PositiveOrZero @PathVariable Long userId,
-            @PositiveOrZero @RequestParam Long eventId
-    ) {
-        log.info("POST: Create request by userId = {} and eventId = {}", userId, eventId);
-        return RequestMapper.mapToDto(requestService.create(userId, eventId));
     }
 
     @PatchMapping("/{userId}/events/{eventId}/requests")
@@ -117,15 +100,5 @@ public class UserController {
         log.info("PATCH: Update event with id = {} and initiator id = {}", eventId, userId);
         Event event = EventMapper.mapToEntity(eventDto);
         return EventMapper.mapToFullDto(eventService.update(userId, eventId, event, eventDto.getCategory()));
-    }
-
-    @PatchMapping("/{userId}/requests/{requestId}/cancel")
-    @ResponseStatus(HttpStatus.OK)
-    public ParticipationRequestDto cancelRequest(
-            @PositiveOrZero @PathVariable Long userId,
-            @PositiveOrZero @PathVariable Long requestId
-    ) {
-        log.info("PATCH: Cancel request by userId = {} and requestId = {}", userId, requestId);
-        return RequestMapper.mapToDto(requestService.cancelRequest(userId, requestId));
     }
 }

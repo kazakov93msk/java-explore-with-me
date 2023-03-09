@@ -1,11 +1,11 @@
 package ru.practicum.ewmservice.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.category.dto.CategoryDto;
 import ru.practicum.ewmservice.user.dto.UserShortDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -15,17 +15,12 @@ import java.util.Objects;
 @Builder
 public class EventShortDto {
   private Long id;
-  @NotBlank
   private String title;
-  @NotBlank
   private String annotation;
-  @NotNull
   private CategoryDto category;
-  @NotNull
-  private String eventDate;
-  @NotNull
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime eventDate;
   private UserShortDto initiator;
-  @NotNull
   private Boolean paid;
   private int views;
   private int confirmedRequests;

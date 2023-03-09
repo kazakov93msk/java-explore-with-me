@@ -17,18 +17,6 @@ import static java.util.Collections.emptyList;
 @Slf4j
 public class ErrorHandler {
 
-    private ApiError buildApiError(Exception e, String reason, HttpStatus status) {
-        log.error(e.getMessage());
-        return ApiError.builder()
-//                .errors(singletonList(Arrays.toString(e.getStackTrace())))
-                .errors(emptyList())
-                .message(e.getMessage())
-                .timestamp(LocalDateTime.now())
-                .reason(reason)
-                .status(status)
-                .build();
-    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleNotFound(final NotFoundException e) {
@@ -69,5 +57,16 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidation(final ValidationException e) {
         return buildApiError(e, "Incorrectly made request.", HttpStatus.BAD_REQUEST);
+    }
+
+    private ApiError buildApiError(Exception e, String reason, HttpStatus status) {
+        log.error(e.getMessage());
+        return ApiError.builder()
+                .errors(emptyList())
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .reason(reason)
+                .status(status)
+                .build();
     }
 }

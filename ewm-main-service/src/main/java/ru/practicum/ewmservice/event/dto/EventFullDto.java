@@ -1,13 +1,13 @@
 package ru.practicum.ewmservice.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.category.dto.CategoryDto;
 import ru.practicum.ewmservice.event.property.EventState;
-import ru.practicum.ewmservice.location.model.Location;
+import ru.practicum.ewmservice.location.dto.LocationDto;
 import ru.practicum.ewmservice.user.dto.UserShortDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -17,28 +17,24 @@ import java.util.Objects;
 @Builder
 public class EventFullDto {
   private Long id;
-  @NotBlank
   private String title;
   private String description;
-  @NotBlank
   private String annotation;
-  @NotNull
   private CategoryDto category;
-  private String createdOn;
-  @NotNull
-  private String eventDate;
-  private String publishedOn;
-  @NotNull
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime createdOn;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime eventDate;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime publishedOn;
   private UserShortDto initiator;
-  @NotNull
-  private Location location;
-  @NotNull
+  private LocationDto location;
   private Boolean paid;
   private Boolean requestModeration;
   private EventState state;
   private Integer participantLimit;
-  private Integer views;
-  private Integer confirmedRequests;
+  private int views;
+  private int confirmedRequests;
 
   @Override
   public boolean equals(java.lang.Object o) {

@@ -27,6 +27,9 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<Compilation> findAll(Boolean pinned, Long from, Integer size) {
+        if (pinned == null) {
+            return compilationRep.findAll(getIdSortedPageable(from, size)).getContent();
+        }
         return compilationRep.findByPinned(pinned, getIdSortedPageable(from, size)).getContent();
     }
 

@@ -1,7 +1,6 @@
 package ru.practicum.ewmservice.event.util;
 
 import lombok.experimental.UtilityClass;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import ru.practicum.ewmservice.event.model.Event;
 import ru.practicum.ewmservice.event.property.EventSort;
@@ -10,16 +9,17 @@ import ru.practicum.ewmservice.event.property.EventState;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @UtilityClass
 public class EventUtil {
 
-    public static Sort getSort(EventSort eventSort) {
-        if (eventSort != null && (eventSort.equals(EventSort.EVENT_DATE) || eventSort.equals(EventSort.VIEWS))) {
-            return Sort.by(eventSort.getValue());
+    public static Comparator<Event> getComparator(EventSort eventSort) {
+        if (EventSort.VIEWS.equals(eventSort)) {
+            return Comparator.comparing(Event::getViews);
         }
-        return Sort.unsorted();
+        return Comparator.comparing(Event::getEventDate);
     }
 
     public static Specification<Event> getEventSpecification(
@@ -44,11 +44,6 @@ public class EventUtil {
             }
 
             if (!text.isBlank()) {
-//                predicates.add(criteriaBuilder.or(
-//                        criteriaBuilder.like(root.get("annotation"), "%" + text + "%"),
-//                        criteriaBuilder.like(root.get("description"), "%" + text + "%")
-//                ));
-
                 predicates.add(criteriaBuilder.or(
                         criteriaBuilder.like(criteriaBuilder.lower(root.get("annotation")), "%" + text + "%"),
                         criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + text + "%")

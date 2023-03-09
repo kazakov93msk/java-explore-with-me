@@ -5,12 +5,13 @@ import ru.practicum.ewmservice.event.property.EventSort;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface EventService {
 
     Event findById(Long id);
 
-    List<Event> findById(List<Long> ids);
+    Set<Event> findById(Set<Long> ids);
 
     List<Event> findByParams(
             List<Long> users,

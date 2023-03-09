@@ -1,5 +1,6 @@
 package ru.practicum.ewmservice.compilation.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewmservice.compilation.dto.CompilationDto;
 import ru.practicum.ewmservice.compilation.dto.NewCompilationDto;
 import ru.practicum.ewmservice.compilation.dto.UpdateCompilationRequest;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CompilationMapper {
 
     public static Compilation mapToEntity(NewCompilationDto compilationDto) {

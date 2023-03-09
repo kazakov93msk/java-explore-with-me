@@ -2,9 +2,6 @@ package ru.practicum.ewmservice.user.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.Objects;
 
 @Getter
@@ -13,10 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class UserShortDto {
-  @NotNull
-  @Positive
   private Long id;
-  @NotBlank
   private String name;
 
   @Override

@@ -3,6 +3,7 @@ package ru.practicum.ewmservice.category.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Getter
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Builder
 public class NewCategoryDto {
   @NotBlank
+  @Size(max = 64)
   private String name;
 
   @Override

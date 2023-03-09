@@ -1,66 +1,66 @@
-package ru.practicum.ewmservice.event.controller;
+package ru.practicum.ewmservice.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmservice.event.dto.EventFullDto;
-import ru.practicum.ewmservice.event.dto.EventShortDto;
+import ru.practicum.ewmservice.event.dto.UpdateEventAdminRequest;
 import ru.practicum.ewmservice.event.mapper.EventMapper;
+import ru.practicum.ewmservice.event.model.Event;
 import ru.practicum.ewmservice.event.property.EventSort;
 import ru.practicum.ewmservice.event.service.EventService;
-import ru.practicum.ewmservice.event.stat.EventStatService;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/events")
+@RequestMapping(path = "/admin")
 @RequiredArgsConstructor
-@Slf4j
 @Validated
-public class EventController {
+@Slf4j
+public class AdminEventController {
 
     private final EventService eventService;
-    private final EventStatService statService;
 
-    @GetMapping
-    public List<EventShortDto> findEventsByParams(
+    @GetMapping("/events")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventFullDto> findEventsByParams(
+            @RequestParam(defaultValue = "") List<Long> users,
             @RequestParam(defaultValue = "") String text,
             @RequestParam(defaultValue = "") List<Long> categories,
             @RequestParam(required = false) Boolean paid,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam(required = false) LocalDateTime rangeStart,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam(required = false) LocalDateTime rangeEnd,
             @RequestParam(defaultValue = "false") Boolean onlyAvailable,
-            @RequestParam(defaultValue = "EVENT_DATE") EventSort sort,
+            @RequestParam(required = false) EventSort sort,
             @PositiveOrZero @RequestParam(defaultValue = "0") Long from,
-            @Positive @RequestParam(defaultValue = "10") Integer size,
-            HttpServletRequest request
+            @Positive @RequestParam(defaultValue = "10") Integer size
     ) {
         log.info("GET: Get events by params");
         if (rangeStart == null) {
             rangeStart = LocalDateTime.now();
         }
-        statService.sendHit(request);
-        return EventMapper.mapToShortDto(eventService.findByParams(
-                Collections.emptyList(),
+        return EventMapper.mapToFullDto(eventService.findByParams(
+                users,
                 text.toLowerCase(), categories, paid, rangeStart, rangeEnd,
-                onlyAvailable, sort, from, size, true)
+                onlyAvailable, sort, from, size, false)
         );
     }
 
-    @GetMapping("/{eventId}")
-    public EventFullDto findById(
+    @PatchMapping("/events/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventFullDto updateEvent(
             @PositiveOrZero @PathVariable Long eventId,
-            HttpServletRequest request
+            @Valid @RequestBody UpdateEventAdminRequest eventDto
     ) {
-        log.info("GET: Get event by id = {}", eventId);
-        statService.sendHit(request);
-        return EventMapper.mapToFullDto(eventService.findById(eventId));
+        log.info("PATCH: Update event with id = {} by admin", eventId);
+        Event event = EventMapper.mapToEntity(eventDto);
+        return EventMapper.mapToFullDto(eventService.update(null, eventId, event, eventDto.getCategory()));
     }
 }

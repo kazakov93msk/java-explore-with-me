@@ -1,10 +1,7 @@
 package ru.practicum.ewmservice.event.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +10,7 @@ import ru.practicum.ewmservice.event.model.Event;
 import ru.practicum.ewmservice.event.property.EventSort;
 import ru.practicum.ewmservice.event.property.EventState;
 import ru.practicum.ewmservice.event.repository.EventRepository;
+import ru.practicum.ewmservice.event.stat.EventStatService;
 import ru.practicum.ewmservice.exception.NotFoundException;
 import ru.practicum.ewmservice.exception.OperationAccessException;
 import ru.practicum.ewmservice.location.repository.LocationRepository;
@@ -20,38 +18,40 @@ import ru.practicum.ewmservice.request.property.RequestStatus;
 import ru.practicum.ewmservice.request.repository.RequestRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static ru.practicum.ewmservice.event.util.EventUtil.getComparator;
 import static ru.practicum.ewmservice.event.util.EventUtil.getEventSpecification;
-import static ru.practicum.ewmservice.event.util.EventUtil.getSort;
 import static ru.practicum.ewmservice.utility.PageableBuilder.getIdSortedPageable;
-import static ru.practicum.ewmservice.utility.PageableBuilder.getPageable;
 import static ru.practicum.ewmservice.utility.Utility.getValOrOld;
+import static ru.practicum.ewmservice.utility.Utility.nvl;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRep;
     private final RequestRepository requestRep;
     private final LocationRepository locationRep;
     private final CategoryService categoryService;
+    private final EventStatService eventStatService;
 
     @Override
     public Event findById(Long id) {
         Event event = eventRep.findById(id).orElseThrow(
                 () -> new NotFoundException(Event.class.getSimpleName(), id)
         );
-        return setConfirmedRequests(event);
+        return setTransientFields(event);
     }
 
     @Override
-    public List<Event> findById(List<Long> ids) {
+    public Set<Event> findById(Set<Long> ids) {
         List<Event> events = eventRep.findByIdIn(ids);
-        return setConfirmedRequests(events);
+        return new HashSet<>(setTransientFields(events));
     }
 
     @Override
@@ -61,15 +61,15 @@ public class EventServiceImpl implements EventService {
             LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
             EventSort eventSort, Long from, Integer size, Boolean isPublic
     ) {
-        Sort sort = getSort(eventSort);
-        Pageable pageable = getPageable(from, size, sort);
-
         Specification<Event> specification = getEventSpecification(
                 users, text, categories, paid, rangeStart, rangeEnd, onlyAvailable, isPublic
         );
-        List<Event> events = eventRep.findAll(specification, pageable).getContent();
 
-        return setConfirmedRequests(events);
+        return setTransientFields(eventRep.findAll(specification)).stream()
+                .sorted(getComparator(eventSort))
+                .skip(from)
+                .limit(size)
+                .collect(toList());
     }
 
     @Override
@@ -79,7 +79,6 @@ public class EventServiceImpl implements EventService {
             locationRep.save(event.getLocation());
         }
         validateEvent(event, null);
-        event.setViews(event.getViews() + 1);
         return eventRep.save(event);
     }
 
@@ -88,13 +87,13 @@ public class EventServiceImpl implements EventService {
         Event event = eventRep.findByIdAndInitiatorId(eventId, userId).orElseThrow(
                 () -> new NotFoundException(Event.class.getSimpleName(), eventId)
         );
-        return setConfirmedRequests(event);
+        return setTransientFields(event);
     }
 
     @Override
     public List<Event> findEventsByUserId(Long userId, Long from, Integer size) {
         List<Event> events = eventRep.findByInitiatorId(userId, getIdSortedPageable(from, size)).getContent();
-        return setConfirmedRequests(events);
+        return setTransientFields(events);
     }
 
     @Override
@@ -134,22 +133,31 @@ public class EventServiceImpl implements EventService {
         return eventRep.save(oldEvent);
     }
 
-    private List<Event> setConfirmedRequests(List<Event> events) {
+    private List<Event> setTransientFields(List<Event> events) {
         List<Long> ids = events.stream().map(Event::getId).collect(toList());
+
         Map<Long, Integer> confirmedRequests = requestRep
                 .findCountRequestsByEventIdsAndStatus(ids, RequestStatus.CONFIRMED);
-        log.info("confirmedRequests: " + confirmedRequests);
         if (confirmedRequests != null && !confirmedRequests.isEmpty()) {
             for (Event event : events) {
-                log.info(event.getId().toString());
-                event.setConfirmedRequests(confirmedRequests.get(event.getId()));
+                event.setConfirmedRequests(nvl(confirmedRequests.get(event.getId()), 0));
             }
         }
+
+        Map<Long, Integer> eventsViews = eventStatService.getViewsByEventIds(ids, null);
+        if (eventsViews != null && !eventsViews.isEmpty()) {
+            for (Event event : events) {
+                event.setViews(nvl(eventsViews.get(event.getId()), 0));
+            }
+        }
+
         return events;
     }
 
-    private Event setConfirmedRequests(Event event) {
-        event.setConfirmedRequests(requestRep.findCountRequestsByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED));
+    private Event setTransientFields(Event event) {
+        event.setConfirmedRequests(requestRep.
+                findCountRequestsByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED));
+        event.setViews(nvl(eventStatService.getViewsByEventId(event.getId(), event.getCreatedOn()), 0));
         return event;
     }
 

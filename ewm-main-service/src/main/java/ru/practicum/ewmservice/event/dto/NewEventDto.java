@@ -1,10 +1,14 @@
 package ru.practicum.ewmservice.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import ru.practicum.ewmservice.location.model.Location;
+import ru.practicum.ewmservice.location.dto.LocationDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -14,19 +18,26 @@ import java.util.Objects;
 @Builder
 public class NewEventDto {
   @NotBlank
+  @Size(max = 255)
   private String title;
   @NotBlank
+  @Size(max = 2000)
   private String annotation;
   @NotBlank
+  @Size(max = 7000)
   private String description;
   @NotNull
   private Long category;
   @NotNull
-  private Location location;
+  private LocationDto location;
   @NotNull
-  private String eventDate;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime eventDate;
+  @NotNull
   private Boolean paid;
+  @PositiveOrZero
   private Integer participantLimit;
+  @NotNull
   private Boolean requestModeration;
 
 

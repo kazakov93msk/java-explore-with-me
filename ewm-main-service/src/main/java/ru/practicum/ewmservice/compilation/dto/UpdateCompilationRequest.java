@@ -2,8 +2,9 @@ package ru.practicum.ewmservice.compilation.dto;
 
 import lombok.*;
 
-import java.util.List;
+import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,8 +12,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class UpdateCompilationRequest {
-  private List<Long> events;
+  private Set<Long> events;
   private Boolean pinned;
+  @Size(max = 128)
   private String title;
 
   @Override

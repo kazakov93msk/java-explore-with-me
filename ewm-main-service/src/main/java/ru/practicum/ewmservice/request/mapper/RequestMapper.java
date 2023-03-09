@@ -1,5 +1,6 @@
 package ru.practicum.ewmservice.request.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewmservice.request.dto.ParticipationRequestDto;
 import ru.practicum.ewmservice.request.model.Request;
 
@@ -7,14 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.practicum.ewmservice.utility.Utility.convertDateTime;
-
+@UtilityClass
 public class RequestMapper {
 
     public static ParticipationRequestDto mapToDto(Request request) {
         return ParticipationRequestDto.builder()
                 .id(request.getId())
-                .created(convertDateTime(request.getCreated()))
+                .created(request.getCreated())
                 .status(request.getStatus())
                 .event(request.getEvent().getId())
                 .requester(request.getRequester().getId())

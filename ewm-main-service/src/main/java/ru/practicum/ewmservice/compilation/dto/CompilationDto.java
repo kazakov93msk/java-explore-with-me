@@ -3,9 +3,6 @@ package ru.practicum.ewmservice.compilation.dto;
 import lombok.*;
 import ru.practicum.ewmservice.event.dto.EventShortDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,12 +13,8 @@ import java.util.Set;
 @Builder
 public class CompilationDto {
   private Set<EventShortDto> events;
-  @NotNull
-  @Positive
   private Long id;
-  @NotNull
   private Boolean pinned;
-  @NotBlank
   private String title;
 
   @Override

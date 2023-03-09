@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
             "SELECT u " +
             "FROM User u " +
-            "WHERE (?2 is null or u.id in ?1)"
+            "WHERE (?2 = 0 or u.id in ?1)"
     )
     Page<User> findByParams(List<Long> ids, int idsLen, Pageable pageable);
 }

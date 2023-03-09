@@ -1,9 +1,13 @@
 package ru.practicum.ewmservice.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.event.property.StateAction;
-import ru.practicum.ewmservice.location.model.Location;
+import ru.practicum.ewmservice.location.dto.LocationDto;
 
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -12,13 +16,18 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class UpdateEventAdminRequest {
+  @Size(max = 255)
   private String title;
+  @Size(max = 2000)
   private String annotation;
+  @Size(max = 7000)
   private String description;
-  private Location location;
+  private LocationDto location;
   private Long category;
-  private String eventDate;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime eventDate;
   private Boolean paid;
+  @PositiveOrZero
   private Integer participantLimit;
   private Boolean requestModeration;
   private StateAction stateAction;

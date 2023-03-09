@@ -2,8 +2,6 @@ package ru.practicum.ewmservice.user.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Getter
@@ -12,11 +10,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class UserDto {
-  @NotBlank
-  @Email
   private String email;
   private Long id;
-  @NotBlank
   private String name;
 
   @Override
