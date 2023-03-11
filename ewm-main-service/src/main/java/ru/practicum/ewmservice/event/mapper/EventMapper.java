@@ -28,8 +28,8 @@ public class EventMapper {
                 .eventDate(eventDto.getEventDate())
                 .createdOn(LocalDateTime.now())
                 .location(LocationMapper.mapToEntity(eventDto.getLocation()))
-                .paid(eventDto.getPaid())
-                .requestModeration(eventDto.getRequestModeration())
+                .paid(eventDto.isPaid())
+                .requestModeration(eventDto.isRequestModeration())
                 .state(EventState.PENDING)
                 .participantLimit(eventDto.getParticipantLimit())
                 .build();
