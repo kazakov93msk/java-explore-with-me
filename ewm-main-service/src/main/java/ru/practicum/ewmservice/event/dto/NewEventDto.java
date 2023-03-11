@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.location.dto.LocationDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -29,16 +30,15 @@ public class NewEventDto {
   @NotNull
   private Long category;
   @NotNull
+  @Valid
   private LocationDto location;
   @NotNull
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime eventDate;
-  @NotNull
-  private Boolean paid;
+  private boolean paid;
   @PositiveOrZero
-  private Integer participantLimit;
-  @NotNull
-  private Boolean requestModeration;
+  private int participantLimit;
+  private boolean requestModeration;
 
 
   @Override
