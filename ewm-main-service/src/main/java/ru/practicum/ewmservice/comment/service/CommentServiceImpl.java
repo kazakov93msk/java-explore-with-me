@@ -26,9 +26,6 @@ import static ru.practicum.ewmservice.utility.Utility.getValOrOld;
 @Transactional(readOnly = true)
 @Slf4j
 public class CommentServiceImpl implements CommentService {
-    private final ChronoUnit TIME_UNITS = ChronoUnit.SECONDS;
-    private final Long ALLOWED_TIME_AMOUNT = 2L;
-
     private final CommentRepository commentRep;
     private final UserService userService;
 
@@ -111,6 +108,9 @@ public class CommentServiceImpl implements CommentService {
         }
         // Для тестов сравнение установлено на 2 секунды.
         // Фактические можно разрешить менять комментарии в течение, например, получаса
+        long ALLOWED_TIME_AMOUNT = 2L;
+        ChronoUnit TIME_UNITS = ChronoUnit.SECONDS;
+
         if (isPublic && comment.getCreated() != null
                 && comment.getCreated().plus(ALLOWED_TIME_AMOUNT, TIME_UNITS).isBefore(LocalDateTime.now())) {
             throw new NotAvailableException(
