@@ -5,9 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmservice.category.service.CategoryService;
-import ru.practicum.ewmservice.compilation.service.CompilationService;
-import ru.practicum.ewmservice.event.service.EventService;
 import ru.practicum.ewmservice.user.dto.NewUserRequest;
 import ru.practicum.ewmservice.user.dto.UserDto;
 import ru.practicum.ewmservice.user.mapper.UserMapper;
@@ -20,17 +17,14 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/users")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
 public class AdminUserController {
     private final UserService userService;
-    private final CategoryService categoryService;
-    private final EventService eventService;
-    private final CompilationService compilationService;
 
-    @GetMapping("/users")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> findUsers(
             @RequestParam(defaultValue = "") List<Long> ids,
@@ -41,7 +35,7 @@ public class AdminUserController {
         return UserMapper.mapToDto(userService.findByParams(ids, from, size));
     }
 
-    @PostMapping("/users")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@Valid @RequestBody NewUserRequest userDto) {
         log.info("POST: Create user = {}", userDto);
@@ -49,7 +43,7 @@ public class AdminUserController {
         return UserMapper.mapToDto(userService.create(user));
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@Positive @PathVariable Long userId) {
         log.info("DELETE: Delete user by id = {}", userId);

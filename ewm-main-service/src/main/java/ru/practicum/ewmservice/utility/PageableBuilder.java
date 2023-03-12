@@ -11,6 +11,7 @@ public class PageableBuilder {
     public static final Integer DEFAULT_SIZE = 10;
     private static final Long DEFAULT_START = 1L;
     public static final Sort ID_ASC = Sort.by(Sort.Direction.ASC, "id");
+    public static final Sort CREATED_DESC = Sort.by(Sort.Direction.DESC, "created");
 
     public static Pageable getPageable(Long start, Integer size, Sort sort) {
         if (start == null) {
@@ -35,5 +36,9 @@ public class PageableBuilder {
 
     public static Pageable getIdSortedPageable(Long start, Integer size) {
         return getPageable(start, size, ID_ASC);
+    }
+
+    public static Pageable getCreatedSortedPageable(Long start, Integer size) {
+        return getPageable(start, size, CREATED_DESC);
     }
 }

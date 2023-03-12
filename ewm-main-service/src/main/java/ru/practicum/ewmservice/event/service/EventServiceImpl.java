@@ -6,6 +6,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmservice.category.service.CategoryService;
+import ru.practicum.ewmservice.comment.model.Comment;
+import ru.practicum.ewmservice.comment.property.CommentStatus;
+import ru.practicum.ewmservice.comment.repository.CommentRepository;
 import ru.practicum.ewmservice.event.model.Event;
 import ru.practicum.ewmservice.event.property.EventSort;
 import ru.practicum.ewmservice.event.property.EventState;
@@ -39,6 +42,7 @@ public class EventServiceImpl implements EventService {
     private final LocationRepository locationRep;
     private final CategoryService categoryService;
     private final EventStatService eventStatService;
+    private final CommentRepository commentRep;
 
     @Override
     public Event findById(Long id) {
@@ -151,6 +155,13 @@ public class EventServiceImpl implements EventService {
             }
         }
 
+        Map<Long, List<Comment>> comments = commentRep.findByEventIds(ids, CommentStatus.APPROVED);
+        if (comments != null && !comments.isEmpty()) {
+            for (Event event : events) {
+                event.setComments(comments.get(event.getId()));
+            }
+        }
+
         return events;
     }
 
@@ -160,6 +171,7 @@ public class EventServiceImpl implements EventService {
                 RequestStatus.CONFIRMED
         ));
         event.setViews(nvl(eventStatService.getViewsByEventId(event.getId(), event.getCreatedOn()), 0));
+        event.setComments(commentRep.findByEventIdAndStatus(event.getId(), CommentStatus.APPROVED));
         return event;
     }
 
