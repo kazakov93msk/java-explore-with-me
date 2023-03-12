@@ -11,7 +11,6 @@ import ru.practicum.ewmservice.comment.repository.CommentRepository;
 import ru.practicum.ewmservice.event.property.EventState;
 import ru.practicum.ewmservice.exception.NotAvailableException;
 import ru.practicum.ewmservice.exception.NotFoundException;
-import ru.practicum.ewmservice.exception.OperationAccessException;
 import ru.practicum.ewmservice.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -91,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
                 && !comment.getCommentator().getId().equals(userId)
                 && !comment.getEvent().getInitiator().getId().equals(userId)
         ) {
-            throw new OperationAccessException("Only the commentator, event owner, or administrator can delete a comment");
+            throw new NotAvailableException("Only the commentator, event owner, or administrator can delete a comment");
         }
 
         commentRep.deleteById(commentId);
