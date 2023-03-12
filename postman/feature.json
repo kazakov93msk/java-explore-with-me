@@ -1,95 +1,11 @@
 {
 	"info": {
-		"_postman_id": "3e19a51e-2b14-400f-9082-ec3b3c4b0d79",
-		"name": "Explore with me - Feature Comments",
+		"_postman_id": "fdc78d8b-56f1-41d0-9c05-5237a126e707",
+		"name": "Explore with me - Feature Comments Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22458069"
 	},
 	"item": [
-		{
-			"name": "Validation",
-			"item": [
-				{
-					"name": "Ошибка: Коммент не существует",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(404);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/comments/:commId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments",
-								":commId"
-							],
-							"variable": [
-								{
-									"key": "commId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Ошибка: Пользователь не существует",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(404);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/comments/users/:userId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments",
-								"users",
-								":userId"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "Add entities",
 			"item": [
@@ -375,7 +291,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Example Event Title\",\r\n  \"annotation\": \"Example event annotation\",\r\n  \"description\": \"Example event description\",\r\n  \"category\": 1,\r\n  \"location\": {\"lat\": 100.123, \"lon\": 200.456},\r\n  \"eventDate\": \"2024-01-01 00:00:00\",\r\n  \"paid\": false,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": true\r\n}\r\n",
+							"raw": "{\r\n  \"title\": \"Example Event Title\",\r\n  \"annotation\": \"Example event annotation\",\r\n  \"description\": \"Example event description\",\r\n  \"category\": 55,\r\n  \"location\": {\"lat\": 100.123, \"lon\": 200.456},\r\n  \"eventDate\": \"2024-01-01 00:00:00\",\r\n  \"paid\": false,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": true\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -395,7 +311,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "63"
 								}
 							]
 						}
@@ -450,11 +366,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "64"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "38"
 								}
 							]
 						}
@@ -529,7 +445,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "38"
 								}
 							]
 						}
@@ -597,11 +513,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "64"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "38"
 								}
 							]
 						}
@@ -609,7 +525,7 @@
 					"response": []
 				},
 				{
-					"name": "Получение событий в ожидании",
+					"name": "Получение комментов в ожидании",
 					"event": [
 						{
 							"listen": "test",
@@ -623,7 +539,7 @@
 									"\r",
 									"const target = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Должен быть список из одного события, которое ожидает публикации\", function () {\r",
+									"pm.test(\"Должен быть список из одного коммента, которое ожидает публикации\", function () {\r",
 									"    pm.expect(target.length).equal(1, \"Список должен содержать событие\");\r",
 									"})"
 								],
@@ -681,7 +597,7 @@
 					"response": []
 				},
 				{
-					"name": "Обновление события комметатором",
+					"name": "Обновление коммента комметатором",
 					"event": [
 						{
 							"listen": "test",
@@ -727,7 +643,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/comments/:commId?userId=2",
+							"raw": "{{baseUrl}}/comments/:commId?userId=64",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -738,7 +654,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "64"
 								}
 							],
 							"variable": [
@@ -752,7 +668,7 @@
 					"response": []
 				},
 				{
-					"name": "Попытка обновления события другим пользователем",
+					"name": "Попытка обновления коммента другим пользователем",
 					"event": [
 						{
 							"listen": "test",
@@ -781,7 +697,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/comments/:commId?userId=3",
+							"raw": "{{baseUrl}}/comments/:commId?userId=65",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -792,7 +708,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "3"
+									"value": "65"
 								}
 							],
 							"variable": [
@@ -910,7 +826,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/comments/:commId?userId=2",
+							"raw": "{{baseUrl}}/comments/:commId?userId=64",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -921,7 +837,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "64"
 								}
 							],
 							"variable": [
@@ -990,18 +906,10 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "38"
 								}
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Получение комметариев по событию",
-					"request": {
-						"method": "GET",
-						"header": []
 					},
 					"response": []
 				},
@@ -1026,7 +934,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/comments/:comId?userId=3",
+							"raw": "{{baseUrl}}/comments/:comId?userId=65",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1037,7 +945,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "3"
+									"value": "65"
 								}
 							],
 							"variable": [
@@ -1057,8 +965,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(200);  \r",
+									"pm.test(\"Ответ должен содержать код статуса 204 и данные в формате json\", function () {\r",
+									"    pm.response.to.have.status(204);  \r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"});"
@@ -1071,7 +979,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/comments/:comId?userId=1",
+							"raw": "{{baseUrl}}/comments/:comId?userId=63",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1082,7 +990,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "63"
 								}
 							],
 							"variable": [
