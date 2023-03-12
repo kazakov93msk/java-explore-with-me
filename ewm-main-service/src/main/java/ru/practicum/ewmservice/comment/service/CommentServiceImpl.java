@@ -108,13 +108,13 @@ public class CommentServiceImpl implements CommentService {
         }
         // Для тестов сравнение установлено на 2 секунды.
         // Фактические можно разрешить менять комментарии в течение, например, получаса
-        long ALLOWED_TIME_AMOUNT = 2L;
-        ChronoUnit TIME_UNITS = ChronoUnit.SECONDS;
+        long allowedTimeAmount = 2L;
+        ChronoUnit timeUnits = ChronoUnit.SECONDS;
 
         if (isPublic && comment.getCreated() != null
-                && comment.getCreated().plus(ALLOWED_TIME_AMOUNT, TIME_UNITS).isBefore(LocalDateTime.now())) {
+                && comment.getCreated().plus(allowedTimeAmount, timeUnits).isBefore(LocalDateTime.now())) {
             throw new NotAvailableException(
-                    String.format("It is forbidden to change a comment after %d, %s", ALLOWED_TIME_AMOUNT, TIME_UNITS)
+                    String.format("It is forbidden to change a comment after %d, %s", allowedTimeAmount, timeUnits)
             );
         }
     }
