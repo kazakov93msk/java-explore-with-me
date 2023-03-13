@@ -30,6 +30,7 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "commentator_id")
     private User commentator;
+    private LocalDateTime modified;
     private LocalDateTime created;
     private CommentStatus status;
 }

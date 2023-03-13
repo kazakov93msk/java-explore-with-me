@@ -61,6 +61,7 @@ public class CommentMapper {
                 .commentatorId(comment.getCommentator().getId())
                 .eventId(comment.getEvent().getId())
                 .status(comment.getStatus())
+                .modified(comment.getModified())
                 .build();
     }
 

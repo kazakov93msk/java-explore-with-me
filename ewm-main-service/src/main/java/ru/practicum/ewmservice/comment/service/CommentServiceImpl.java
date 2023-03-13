@@ -2,7 +2,6 @@ package ru.practicum.ewmservice.comment.service;
 
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmservice.comment.model.Comment;
@@ -23,7 +22,6 @@ import static ru.practicum.ewmservice.utility.Utility.getValOrOld;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRep;
     private final UserService userService;
@@ -72,10 +70,9 @@ public class CommentServiceImpl implements CommentService {
 
         if (isPublic) {
             oldComment.setStatus(CommentStatus.PENDING);
-            log.info("Public: " + CommentStatus.PENDING);
+            oldComment.setModified(LocalDateTime.now());
         } else {
             oldComment.setStatus(getValOrOld(oldComment.getStatus(), comment.getStatus()));
-            log.info("Not public: " + comment.getStatus());
         }
 
         return commentRep.save(oldComment);

@@ -16,6 +16,7 @@ public class CommentDto {
     private String text;
     private Long eventId;
     private Long commentatorId;
+    private LocalDateTime modified;
     private LocalDateTime created;
     private CommentStatus status;
 }
