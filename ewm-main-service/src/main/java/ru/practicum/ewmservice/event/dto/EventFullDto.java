@@ -3,11 +3,13 @@ package ru.practicum.ewmservice.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.category.dto.CategoryDto;
+import ru.practicum.ewmservice.comment.dto.CommentDto;
 import ru.practicum.ewmservice.event.property.EventState;
 import ru.practicum.ewmservice.location.dto.LocationDto;
 import ru.practicum.ewmservice.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -35,6 +37,7 @@ public class EventFullDto {
   private Integer participantLimit;
   private int views;
   private int confirmedRequests;
+  private List<CommentDto> comments;
 
   @Override
   public boolean equals(java.lang.Object o) {

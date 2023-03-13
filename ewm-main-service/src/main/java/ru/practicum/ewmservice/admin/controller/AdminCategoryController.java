@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/categories")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -23,7 +23,7 @@ public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/categories")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createCategory(@Valid @RequestBody NewCategoryDto categoryDto) {
         log.info("POST: Create category = {}", categoryDto);
@@ -31,7 +31,7 @@ public class AdminCategoryController {
         return CategoryMapper.mapToDto(categoryService.create(category));
     }
 
-    @PatchMapping("/categories/{catId}")
+    @PatchMapping("/{catId}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto updateCategory(
             @PositiveOrZero @PathVariable Long catId,
@@ -42,7 +42,7 @@ public class AdminCategoryController {
         return CategoryMapper.mapToDto(categoryService.update(catId, category));
     }
 
-    @DeleteMapping("/categories/{catId}")
+    @DeleteMapping("/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PositiveOrZero @PathVariable Long catId) {
         log.info("DELETE: Delete category by id = {}", catId);

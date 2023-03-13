@@ -2,6 +2,7 @@ package ru.practicum.ewmservice.event.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.ewmservice.category.mapper.CategoryMapper;
+import ru.practicum.ewmservice.comment.mapper.CommentMapper;
 import ru.practicum.ewmservice.event.dto.*;
 import ru.practicum.ewmservice.event.model.Event;
 import ru.practicum.ewmservice.event.property.EventState;
@@ -81,6 +82,7 @@ public class EventMapper {
                 .participantLimit(event.getParticipantLimit())
                 .views(nvl(event.getViews(), 0))
                 .confirmedRequests(nvl(event.getConfirmedRequests(), 0))
+                .comments(CommentMapper.mapToDto(event.getComments()))
                 .build();
     }
 
@@ -95,6 +97,7 @@ public class EventMapper {
                 .paid(event.getPaid())
                 .views(nvl(event.getViews(), 0))
                 .confirmedRequests(nvl(event.getConfirmedRequests(), 0))
+                .comments(CommentMapper.mapToDto(event.getComments()))
                 .build();
     }
 

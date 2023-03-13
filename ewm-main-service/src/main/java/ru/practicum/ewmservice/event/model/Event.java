@@ -2,6 +2,7 @@ package ru.practicum.ewmservice.event.model;
 
 import lombok.*;
 import ru.practicum.ewmservice.category.model.Category;
+import ru.practicum.ewmservice.comment.model.Comment;
 import ru.practicum.ewmservice.event.property.EventState;
 import ru.practicum.ewmservice.location.model.Location;
 import ru.practicum.ewmservice.user.model.User;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -49,6 +51,8 @@ public class Event {
     private Integer views;
     @Transient
     private Integer confirmedRequests;
+    @Transient
+    private List<Comment> comments;
 
     @Override
     public String toString() {

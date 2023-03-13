@@ -3,6 +3,7 @@ package ru.practicum.ewmservice.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmservice.category.service.CategoryService;
 import ru.practicum.ewmservice.event.dto.EventFullDto;
@@ -28,6 +29,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class UserEventController {
     private final UserService userService;
     private final EventService eventService;

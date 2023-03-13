@@ -3,9 +3,11 @@ package ru.practicum.ewmservice.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmservice.category.dto.CategoryDto;
+import ru.practicum.ewmservice.comment.dto.CommentDto;
 import ru.practicum.ewmservice.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -24,6 +26,7 @@ public class EventShortDto {
   private Boolean paid;
   private int views;
   private int confirmedRequests;
+  private List<CommentDto> comments;
 
   @Override
   public boolean equals(java.lang.Object o) {

@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/compilations")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -26,7 +26,7 @@ public class AdminCompilationController {
     private final EventService eventService;
     private final CompilationService compilationService;
 
-    @PostMapping("/compilations")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto createCompilation(@Valid @RequestBody NewCompilationDto compDto) {
         log.info("POST: Create compilation = {}", compDto);
@@ -37,7 +37,7 @@ public class AdminCompilationController {
         return CompilationMapper.mapToDto(compilationService.create(compilation));
     }
 
-    @PatchMapping("/compilations/{compId}")
+    @PatchMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
     public CompilationDto updateCompilation(
             @PositiveOrZero @PathVariable Long compId,
@@ -49,7 +49,7 @@ public class AdminCompilationController {
         return CompilationMapper.mapToDto(compilationService.update(compId, compilation));
     }
 
-    @DeleteMapping("/compilations/{compId}")
+    @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompilationById(@PositiveOrZero @PathVariable Long compId) {
         log.info("DELETE: Delete compilation by id = {}", compId);
