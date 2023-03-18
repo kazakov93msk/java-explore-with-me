@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/events")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -28,7 +28,7 @@ public class AdminEventController {
 
     private final EventService eventService;
 
-    @GetMapping("/events")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventFullDto> findEventsByParams(
             @RequestParam(defaultValue = "") List<Long> users,
@@ -53,7 +53,7 @@ public class AdminEventController {
         );
     }
 
-    @PatchMapping("/events/{eventId}")
+    @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventFullDto updateEvent(
             @PositiveOrZero @PathVariable Long eventId,
